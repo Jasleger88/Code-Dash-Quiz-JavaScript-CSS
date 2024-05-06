@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script defer src="./app.js"></script>
+    <link rel='stylesheet' href='./style.css'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code-Dash: JavaScript & CSS Jumpstart Challenge</title>
+</head>
+
+<body>
+    <header>
+        <h1> Code-Dash: JavaScript & CSS Jumpstart Challenge </h1>
+    </header>
+    <main> 
+    <div class="score-container">
+        <h2 id="player-score"> Score: <span id="score-value"> 0 </span></h2>
+    </div>
+    <p class="how-to-play"> How to play: <span class="directions">Challenge you're JavaScript & CSS skills by taking a
+            quiz.<br /> Go as fast you can! <br /> Earn points by answering each question correctly!</span></p>
+        <div id="challenge-container">
+            <h2 id="question-text"> Quiz Questions</h2>
+            <section id="answer-choices">
+                <button class="quiz-button"> Option A </button>
+                <button class="quiz-button"> Option B </button>
+                <button class="quiz-button"> Option C </button>
+                <button class="quiz-button"> Option D </button>
+            </section>
+            <section id=feedback-message>
+                <div id = "player" class="music"> </div>
+                <div class="feedback-message"> You are Correct! </div>
+                <div class="feedback-message"> You are Incorrect!</div>
+            </section>
+            </div>
+        </main>
+        <footer>
+            <nav id="navigation-control">
+                <button id="next-button">Next</button>
+                <button id="submit-button">Submit</button>
+            </nav>
+        </footer>
+</body>
+
+</html>
