@@ -6,23 +6,18 @@ const quizQuestions = [
    },
    {
       question: "What is the correct syntax for adding color to the background?",
-      option: ["{ body; color:black }", "color of body: black;", "body {color: black;}", "{background-color: black }"],
+      option: [ "color: background;", "colorOfBody: black;", "background-color: red;", "background-color: none "],
       answer: 2
    },
    {
       question: "How do you display hyperlinks without an underline ?",
-      option: ["a { text-decoration: none }", " a { text-decoration: underline = none }", "{text-decoration: none }", "None the above"],
+      option: ["text-decoration: none;", " text-decoration: underline = none ", "text-decoration: none ", "None the above"],
       answer: 0
    },
    {
       question: "Which of the following JavaScript methods is used to get the computed style of an element?",
-      option: [" getElementComputedStyle()", "getStyle()", "getComputedStyle()", "fetchStyle()"],
+      option: [" getElementComputedStyle()", "retrieveStyle()", "getComputedStyle()", "fetchStyle()"],
       answer: 2
-   },
-   {
-      question: "What is the difference between `==` and `===` in JavaScript comparison operators?",
-      options: ["`==` checks for equality of value and type, while `===` checks for equality of value only", " `==` checks for equality of value only, while `===` checks for equality of value and type", "`==` and `===` are equivalent and can be used interchangeably", " `==` is used for strict comparison, while `===` is used for loose comparison"],
-      answer: 1
    },
    {
       question: "How do you round the number to the nearest integer?",
@@ -49,7 +44,13 @@ const quizQuestions = [
       option: ["It throws a runtime error", "It returns `undefined`", "It returns `null`", "It returns an empty string"],
       answer: 0
 
+   },
+   {
+      question: "Which of the following array methods is used to sort the elements of an arry in place and returns the sorted array?",
+      option: ["sort()", "sorted()", "order()", "arrange ()"],
+      answer: 0
    }
+
 
 ]
 let questionText = document.getElementById('question-text');
@@ -70,71 +71,52 @@ let playerScore = 0;
 //Function to start the game
 function startGame() {
    console.log('game started');
-
    currentQuestionIndex = 0;
    playerScore = 0;
-
-
    displayQuestion(quizQuestions[currentQuestionIndex].question,
       quizQuestions[currentQuestionIndex].option);
 
 }
 const nextButton = document.getElementById('next-button');
-nextButton.addEventListener('click', function () {
-   currentQuestionIndex++;
-   console.log(quizQuestions[currentQuestionIndex])
-})
+
 
 // Function to display the question
-function displayQuestion(question, options) {
-   questionText.textContent = question;
-   console.log("Hey World", options)
-   console.log(answerChoices)
-   options.forEach((choice, index) => {
+function displayQuestion() {
+   const currentQuestion = quizQuestions[currentQuestionIndex]
+   questionText.innerText = currentQuestion.question;
+   currentQuestion.option.forEach((choice, index) => {
       answerChoices[index].textContent = choice;
    });
-   function nextQuestion() {
-      currentQuestionIndex++;
-      if (currentQuestionIndex < quizQuestions.length) {
-         displayQuestion();
-      } else {
-         console.log("quiz completed")
-      }
+}
+function nextQuestion() {
+   currentQuestionIndex++;
+   if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion();
+      answerChoices.forEach(choice => {
+         choice.disabled = false;
+      });
+   } else {
+      console.log("quiz completed")
    }
 }
-
-
-
-
-console.log(quizQuestions)
-console.log(quizQuestions[currentQuestionIndex].question,
-   quizQuestions[currentQuestionIndex].option)
-
 // set conditionoal for correct answers/ incorrect answer
 
 function checkAnswer(event) {
-   console.log(event.target.value)
    const currentQuestion = quizQuestions[currentQuestionIndex];
    const selectedAnswer = parseInt(event.target.id);
-   console.log(selectedAnswer)
-   console.log(currentQuestion.answer)
-
-
-
-
-   function incrementScore() {
-      playerScore += 10;
-      console.log(incrementScore)
-   }
+   
 
    if (selectedAnswer === currentQuestion.answer) {
-      feedbackMessage.innerText = `You are Correct: ${selectedAnswer}`;
+      feedbackMessage.innerText = "You are Correct!"; 
       feedbackMessage.style.color = "green";
       playerScore += 10;
+      scoreValue.innerText = playerScore;
+      
+      
       audio.src = './Audio/correct.mp3'
       audio.play();
    } else {
-      feedbackMessage.innerText = `You are incorrect: ${selectedAnswer}`;
+      feedbackMessage.innerText = "You are incorrect."; 
       feedbackMessage.style.color = "red";
       audio.src = './Audio/wrong.mp3'
       audio.play();
@@ -142,19 +124,17 @@ function checkAnswer(event) {
    answerChoices.forEach(choice => {
       choice.disabled = true;
    });
-   currentQuestionIndex;
-   if (currentQuestionIndex < quizQuestions.length) {
-      displayQuestion();
-   } else {
-      console.log("Quiz Completed")
+   setTimeout (() => {
+      feedbackMessage.textContent = ""; }, 
+      1000);
    }
-}
 
-function continueGameUntilEnd() {
-   feedbackMessage.textContent = "At the end of the Quiz, you can view your score or restart the game.";
-   navigation - control.style.display
-   console.log(feedbackMessage.textContent)
-}
+
+// function continueGameUntilEnd() {
+//    feedbackMessage.textContent = "At the end of the Quiz, you can view your score or restart the game.";
+//    navigationControl.style.display
+//    console.log(feedbackMessage.textContent)
+// }
 
 let allQuestionsCompleted = true;
 
@@ -169,6 +149,41 @@ if (allQuestionsCompleted) {
 
    startGame();
 }
+
+function restartQuiz () {
+   currentQuestionIndex = 0;
+   playerScore = 0;
+   displayQuestion();
+}
+
+function displayFinalScore () {
+   const quizContainer = document.getElementById('quizContainer');
+   quizContainer.innerHTML = "";
+
+   document.getElementById('quizButton').style.display = 'none';
+   document.getElementById('restart').style.display = 'block';
+   
+   
+if (currentQuestionIndex >= quizQuestions.length) {
+   displayFinalScore ();
+}
+document.getElementById('restart').addEventListener('click', restartQuiz);
+
+function submitQuiz () {
+   let score = 0;
+    for (let i = 0; i < quizQuestions.length; i++) {
+      const currentQuestion =quizQuestions[i];
+      const selectedAnswer = currentQuestion.options[selectedAnswerIndex];
+
+      if (selectedAnswer === currentQuestion.correctAnswer) {
+         score++;
+      }
+    }
+    const scoreDisplay = document.getElementById('score');
+   scoreDisplay.textContent = `Your Final Score: ${score}/${playerScore}`;
+}
+}
+
 const quizButton = document.querySelectorAll('.quiz-button')
 quizButton.forEach((button, index) => {
    button.addEventListener('click', checkAnswer)
@@ -176,26 +191,10 @@ quizButton.forEach((button, index) => {
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function () {
    if (currentQuestionIndex < 10) {
-      console.log("Not Done Yet");
    } else {
-      console.log("Submitting all Answers");
    }
 });
+nextButton.addEventListener('click', nextQuestion);
 
 
-//function to display score/ increase score
-//function to SUBMIT QUIZ
-//function to reset game
-//displayQuestion();
-//display Answers
-// call the questions/ answers
-//displayQuestion(quizQuestions[currentQuestionIndex].question,
-//quizQuestions[currentQuestionIndex].options);
-//eventlistener 
-// add event listener to click on the user
-// add event listener to submit
-// add event listener to next
-//function to say the quiz is completed
-//alt on the image 
-//style page more
 
