@@ -119,6 +119,12 @@ p {
     color: rgb(104, 10, 10);
     font-weight: bold;
 }
+.displayNone {
+    display: none;
+}
+.displayBlock {
+    display: block;
+}
 
     
 

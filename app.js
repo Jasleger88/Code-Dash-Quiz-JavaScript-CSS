@@ -6,7 +6,7 @@ const quizQuestions = [
    },
    {
       question: "What is the correct syntax for adding color to the background?",
-      option: [ "color: background;", "colorOfBody: black;", "background-color: red;", "background-color: none "],
+      option: ["color: background;", "colorOfBody: black;", "background-color: red;", "background-color: none "],
       answer: 2
    },
    {
@@ -59,6 +59,7 @@ const feedbackMessage = document.querySelector('.feedback-message');
 const navigationControl = document.getElementById('navigation-control')
 const scoreValue = document.getElementById('score-value');
 const audio = document.getElementById('my-audio')
+document.getElementById('restart').classList.add('displayNone');
 
 
 console.log(quizQuestions[0].question);
@@ -104,19 +105,19 @@ function nextQuestion() {
 function checkAnswer(event) {
    const currentQuestion = quizQuestions[currentQuestionIndex];
    const selectedAnswer = parseInt(event.target.id);
-   
+
 
    if (selectedAnswer === currentQuestion.answer) {
-      feedbackMessage.innerText = "You are Correct!"; 
+      feedbackMessage.innerText = "You are Correct!";
       feedbackMessage.style.color = "green";
       playerScore += 10;
       scoreValue.innerText = playerScore;
-      
-      
+
+
       audio.src = './Audio/correct.mp3'
       audio.play();
    } else {
-      feedbackMessage.innerText = "You are incorrect."; 
+      feedbackMessage.innerText = "You are incorrect.";
       feedbackMessage.style.color = "red";
       audio.src = './Audio/wrong.mp3'
       audio.play();
@@ -124,17 +125,11 @@ function checkAnswer(event) {
    answerChoices.forEach(choice => {
       choice.disabled = true;
    });
-   setTimeout (() => {
-      feedbackMessage.textContent = ""; }, 
+   setTimeout(() => {
+      feedbackMessage.textContent = "";
+   },
       1000);
-   }
-
-
-// function continueGameUntilEnd() {
-//    feedbackMessage.textContent = "At the end of the Quiz, you can view your score or restart the game.";
-//    navigationControl.style.display
-//    console.log(feedbackMessage.textContent)
-// }
+}
 
 let allQuestionsCompleted = true;
 
@@ -150,38 +145,28 @@ if (allQuestionsCompleted) {
    startGame();
 }
 
-function restartQuiz () {
-   currentQuestionIndex = 0;
-   playerScore = 0;
-   displayQuestion();
-}
+function displayFinalScore() {
+   const challengeContainer = document.getElementById('challenge-container');
+   challengeContainer.innerText = "";
 
-function displayFinalScore () {
-   const quizContainer = document.getElementById('quizContainer');
-   quizContainer.innerHTML = "";
-
-   document.getElementById('quizButton').style.display = 'none';
-   document.getElementById('restart').style.display = 'block';
    
-   
-if (currentQuestionIndex >= quizQuestions.length) {
-   displayFinalScore ();
-}
-document.getElementById('restart').addEventListener('click', restartQuiz);
+   answerChoices.forEach(button => {
+      button.classList.add('displayNone')
+   })
+   document.getElementById('restart').classList.add('displayBlock');
 
-function submitQuiz () {
-   let score = 0;
-    for (let i = 0; i < quizQuestions.length; i++) {
-      const currentQuestion =quizQuestions[i];
-      const selectedAnswer = currentQuestion.options[selectedAnswerIndex];
 
-      if (selectedAnswer === currentQuestion.correctAnswer) {
-         score++;
-      }
-    }
-    const scoreDisplay = document.getElementById('score');
-   scoreDisplay.textContent = `Your Final Score: ${score}/${playerScore}`;
+   // if (currentQuestionIndex >= quizQuestions.length) {
+      challengeContainer.innerText = `Your Final score: ${playerScore}`
+   // }
+   document.getElementById('restart').addEventListener('click', restartQuiz);
 }
+
+function restartQuiz() {
+   // currentQuestionIndex = 0;
+   // playerScore = 0;
+   // displayQuestion();
+   window.location.reload();
 }
 
 const quizButton = document.querySelectorAll('.quiz-button')
@@ -190,10 +175,13 @@ quizButton.forEach((button, index) => {
 })
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function () {
-   if (currentQuestionIndex < 10) {
-   } else {
+   if (currentQuestionIndex >= 9) {
+      console.log("hello")
+      displayFinalScore();
    }
+
 });
+
 nextButton.addEventListener('click', nextQuestion);
 
 
