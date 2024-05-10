@@ -177,12 +177,12 @@ const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function () {
    const playerPercentage = (playerScore / (quizQuestions.length * 10)) * 100;
 
-if (playerPercentage >= 70) {
-   displayFinalScore();
-   window.alert("Congraatulations, You Win")
-} else {
-   window.alert("You lose!")
-}
+   if (playerPercentage >= 70) {
+      displayFinalScore();
+      window.alert("Congratulations, You Win")
+   } else {
+      window.alert("You lose!")
+   }
 });
 
 nextButton.addEventListener('click', nextQuestion);
