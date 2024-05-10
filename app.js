@@ -83,6 +83,7 @@ function displayQuestion() {
    currentQuestion.option.forEach((choice, index) => {
       answerChoices[index].textContent = choice;
    });
+
 }
 function nextQuestion() {
    currentQuestionIndex++;
@@ -142,12 +143,12 @@ function displayFinalScore() {
    const challengeContainer = document.getElementById('challenge-container');
    challengeContainer.innerText = "";
 
-   
+
    answerChoices.forEach(button => {
       button.classList.add('displayNone')
    })
    document.getElementById('restart').classList.add('displayBlock');
-   
+
    challengeContainer.innerText = `Your Final score: ${playerScore}`
 
    document.getElementById('restart').addEventListener('click', restartQuiz);
@@ -158,13 +159,13 @@ function restartQuiz() {
    window.location.reload();
 }
 
-muteButton.addEventListener('click', function() {
+muteButton.addEventListener('click', function () {
    if (audio.muted) {
-      audio.muted= false;
+      audio.muted = false;
       muteButton.textContent = 'Mute';
    } else {
       audio.muted = true;
-      muteButton.textContent ='Unmute';
+      muteButton.textContent = 'Unmute';
    }
 });
 
@@ -174,13 +175,14 @@ quizButton.forEach((button, index) => {
 })
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', function () {
-   if (currentQuestionIndex >= 9) {
-      displayFinalScore();
-      window.alert("Congrats, You Win")
-   } else {
-      window.alert("You lose!")
-   }
+   const playerPercentage = (playerScore / (quizQuestions.length * 10)) * 100;
 
+if (playerPercentage >= 70) {
+   displayFinalScore();
+   window.alert("Congraatulations, You Win")
+} else {
+   window.alert("You lose!")
+}
 });
 
 nextButton.addEventListener('click', nextQuestion);
